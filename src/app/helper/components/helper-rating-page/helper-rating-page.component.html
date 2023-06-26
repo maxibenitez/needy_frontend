@@ -1,0 +1,28 @@
+<app-header class="header" [bgColor]="'bgColor-white'" [visibility]="'show'"></app-header>
+
+<div class="rating-container">
+  <div class="helper-image-container">
+      <img src={{user.imageSrc}}>
+  </div>
+  <div class="info-container">
+    <div class="info">
+      <div class="flex name">
+        <h2>{{user.firstName}} {{user.lastName}}</h2>
+        <span class="age">{{user.age}}</span>
+      </div>
+      <div class="flex">
+        <app-stars [avgRating]="user.avgRating!"></app-stars>
+        <span class="rating">{{user.avgRating}}</span>
+      </div>
+    </div>  
+    <div class="list-container" *ngIf="ratings">
+      <div *ngFor="let rating of ratings">
+        <app-card [rating]="rating" [type]="'rating'"></app-card>
+      </div>
+    </div>
+    <div class="message" *ngIf="ratings.length == 0">
+      <i class="bi bi-exclamation-circle empty"></i>
+      <span>Are no ratings yet.</span>
+  </div>
+  </div>
+</div>

@@ -1,0 +1,90 @@
+<app-header class="header" [bgColor]="'bgColor-white'" [visibility]="'show'"></app-header>
+
+<div class="need-container">
+    <div class="need-image-container">
+        <img src={{need.imageSrc}}>
+    </div>
+    <div class="need-info-container">
+        <div class="info">
+            <h2>{{need.title}}</h2>
+            <p>{{need.description}}</p>
+            <span class="info-item">
+                <i class="bi bi-person"></i>
+                <a class="link" (click)="redirectToUserPage(need.requestor.ci)">{{need.requestor.firstName}} {{need.requestor.lastName}}</a>
+            </span>
+            <span class="info-item">
+                <i class="bi bi-geo-alt"></i>
+                <span class="text">{{need.needAddress}}</span>
+            </span>
+            <span class="info-item">
+                <i class="bi bi-calendar4"></i>
+                <span class="text">{{need.needDate | date}}</span>
+            </span>
+            <span class="info-item">
+                <i class="bi bi-map"></i>
+                <span class="text">{{need.modality}}</span>
+            </span>
+            <div class="skills">
+                <span class="label">Requested Skills</span>
+                <ul *ngFor="let skill of need.requestedSkills">
+                    <li class="skill">
+                        <span class="data">{{skill.name | titlecase}}</span>
+                    </li>
+                </ul>
+            </div>
+        </div>  
+        <div *ngIf="errorMessage" class="error text-danger">
+            {{errorMessage}}
+        </div>
+        <div class="btn-container">
+            <div class="btn-creator" *ngIf="isRequestor && !isExpired()">
+                <app-button [text]="'Edit'" 
+                    [bgColor]="'bgColor-blue'" 
+                    class="button-needy small" 
+                    (click)="updateNeedy()">
+                </app-button>
+                <app-button [text]="'Appliers'" 
+                    [bgColor]="'bgColor-blue'" 
+                    class="button-needy small" 
+                    (click)="redirectToAppliersPage(need.id)">
+                </app-button>
+                <app-button [text]="'Delete'" 
+                    [bgColor]="'bgColor-red'" 
+                    class="button-needy small" 
+                    (click)="openDeleteModal()">
+                </app-button>
+            </div>
+            <app-button [text]="'Rating User'" 
+                [bgColor]="'bgColor-blue'" 
+                class="button-needy" 
+                *ngIf="isRequestor && isExpired()"
+                (click)="redirectToRatingPage()">
+            </app-button>
+            <app-button [text]="'Apply'" 
+                [bgColor]="'bgColor-blue'" 
+                class="button-needy" 
+                *ngIf="!isRequestor && !isApplied"
+                (click)="applyNeed()">
+            </app-button>
+            <app-button [text]="'Unapply'" 
+                [bgColor]="'bgColor-red'" 
+                class="button-needy" 
+                *ngIf="!isRequestor && isApplied" 
+                (click)="openUnapplyModal()">
+            </app-button>
+        </div>
+    </div>
+</div>
+<app-alert *ngIf="showAppliedAlert"></app-alert>
+<app-modal *ngIf="showUnapplyModal"
+    (closeModal)="closeModal()" 
+    (actionModal)="unapplyNeed()"
+    [btnText]="'Unapply'" 
+    [text]="'Are you sure you want to unapply?'">
+</app-modal>
+<app-modal *ngIf="showDeleteModal"
+    (closeModal)="closeModal()" 
+    (actionModal)="deleteNeedy()"
+    [btnText]="'Delete'" 
+    [text]="'Are you sure you want to delete this need?'">
+</app-modal>
