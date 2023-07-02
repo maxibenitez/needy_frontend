@@ -1,18 +1,13 @@
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Observable, catchError, map, of, tap } from 'rxjs';
+import { Observable, catchError, map, of } from 'rxjs';
 
 import { API_URL } from 'src/app/core/const';
 import { UpdateUser } from 'src/app/core/interfaces/updateUser';
 import { User } from 'src/app/core/interfaces/user';
+import { HeaderService } from 'src/app/shared/services/header.service';
 
 const URL = `${API_URL}/users`;
-const token = localStorage.getItem('token');
-const parseToken = JSON.parse(token!);
-const headers = new HttpHeaders({
-  'Authorization': `Bearer ${parseToken}`,
-  'Content-Type': 'application/json'
-});
 
 @Injectable({
   providedIn: 'root'
@@ -32,17 +27,20 @@ export class UserService {
     { ci: "98765432", src: "./assets/images/profile5.jpg"}//maria
   ];
 
-  constructor(private http: HttpClient) { }
+  constructor(
+    private http: HttpClient,
+    private headerService: HeaderService
+  ) { }
 
   getUsers(): Observable<User[]> {
-    return this.http.get<User[]>(`${URL}/get-users`, { headers }).pipe(
+    return this.http.get<User[]>(`${URL}/get-users`, { headers: this.headerService.getHeader() }).pipe(
       map(users => users.map(user => this.setUserImageSrc(user))),
       catchError(this.handleError<User[]>(`getUsers`))
     );
   }
 
   getUserBySkill(id: number): Observable<User[]> {
-    return this.http.get<User[]>(`${URL}/get-users-by-skill/${id}`, { headers }).pipe(
+    return this.http.get<User[]>(`${URL}/get-users-by-skill/${id}`, { headers: this.headerService.getHeader() }).pipe(
       map(users => users.map(user => this.setUserImageSrc(user))),
       catchError(this.handleError<User[]>(`getUserBySkill`))
     );
@@ -50,7 +48,7 @@ export class UserService {
 
   getUsersBySkillName(term: string): Observable<User[]> {
     const searchTerm = JSON.stringify(term);
-    return this.http.post<User[]>(`${URL}/get-users-by-skill-name`, searchTerm, { headers }).pipe(
+    return this.http.post<User[]>(`${URL}/get-users-by-skill-name`, searchTerm, { headers: this.headerService.getHeader() }).pipe(
       map(users => users.map(user => this.setUserImageSrc(user))),
       catchError(this.handleError<User[]>(`getUsersBySkillName`))
     );
@@ -58,14 +56,14 @@ export class UserService {
 
   getUserByCI(ci: string): Observable<User> {
     const userCI = JSON.stringify(ci);
-    return this.http.post<User>(`${URL}/get-user-by-ci`, userCI, { headers }).pipe(
+    return this.http.post<User>(`${URL}/get-user-by-ci`, userCI, { headers: this.headerService.getHeader() }).pipe(
       map(user => this.setUserImageSrc(user)),
       catchError(this.handleError<User>(`getUserByCI`))
     );
   }
 
   updateUser(info: UpdateUser) {
-    return this.http.put<any>(`${URL}/update-user`, info, { headers }).pipe(
+    return this.http.put<any>(`${URL}/update-user`, info, { headers: this.headerService.getHeader() }).pipe(
       catchError(this.handleError<any>(`updateUser`))
     );
   }
