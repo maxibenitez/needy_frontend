@@ -96,7 +96,8 @@ export class NeedPageComponent implements OnInit {
     );
   }
 
-  redirectToRatingPage() {
+  redirectToRatingPage(ci: string) {
+    this.dataService.userCI = ci;
     this.router.navigateByUrl('/rating');
   }
 

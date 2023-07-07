@@ -7,13 +7,13 @@ import { Component, Input, OnInit } from '@angular/core';
 })
 export class StarsComponent implements OnInit {
 
-  @Input() avgRating!: number;
+  @Input() stars!: number;
   
   constructor() { }
 
   ngOnInit(): void {
-    if (this.avgRating === undefined) {
-      this.avgRating = 0;
+    if (this.stars === undefined) {
+      this.stars = 0;
     }
   }
 

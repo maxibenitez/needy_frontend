@@ -12,7 +12,7 @@
                 <i class="bi bi-person"></i>
                 <a class="link" (click)="redirectToUserPage(need.requestor.ci)">{{need.requestor.firstName}} {{need.requestor.lastName}}</a>
             </span>
-            <span class="info-item">
+            <span class="info-item" *ngIf="need.modality === 'Home'">
                 <i class="bi bi-geo-alt"></i>
                 <span class="text">{{need.needAddress}}</span>
             </span>
@@ -58,7 +58,7 @@
                 [bgColor]="'bgColor-blue'" 
                 class="button-needy" 
                 *ngIf="isRequestor && isExpired()"
-                (click)="redirectToRatingPage()">
+                (click)="redirectToRatingPage(need.acceptedApplier!.ci)">
             </app-button>
             <app-button [text]="'Apply'" 
                 [bgColor]="'bgColor-blue'" 
