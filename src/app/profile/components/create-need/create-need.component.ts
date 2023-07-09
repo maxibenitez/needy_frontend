@@ -26,6 +26,9 @@ export class CreateNeedComponent implements OnInit {
   showAlert = false;
   needForm!: FormGroup;
   modalities: string[] = ['Remote', 'Home', 'Visit'];
+  zones: string[] = ['Artigas', 'Canelones', 'Cerro Largo', 'Colonia', 'Durazno', 'Flores', 'Florida',
+    'Lavalleja', 'Maldonado', 'Montevideo', 'Paysandú', 'Río Negro', 'Rivera', 'Rocha', 'Salto',
+    'San José', 'Soriano', 'Tacuarembó', 'Treinta y Tres'];
   skills: Skill[] = [];
   skillsId: number[] = [];
 
@@ -40,6 +43,7 @@ export class CreateNeedComponent implements OnInit {
     this.needForm = this.fb.group({
       title: new FormControl('', [Validators.required, Validators.maxLength(20)]),
       address: new FormControl('', Validators.required),
+      zone: new FormControl('', Validators.required),
       date: new FormControl('', [Validators.required, needDateValidator()]),
       modality: new FormControl('', Validators.required),
       description: new FormControl('', [Validators.required, Validators.maxLength(150)]),
@@ -64,6 +68,7 @@ export class CreateNeedComponent implements OnInit {
     const need: InsertNeed = {
       title: this.needForm.get('title')!.value,
       needAddress: this.needForm.get('address')!.value,
+      needZone: this.needForm.get('zone')!.value,
       modality: this.needForm.get('modality')!.value,
       needDate: this.needForm.get('date')!.value,
       description: this.needForm.get('description')!.value,

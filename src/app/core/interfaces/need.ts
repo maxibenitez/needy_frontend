@@ -14,6 +14,7 @@ export interface Need {
     acceptedDate?: Date;
     requestedSkills: Skill[];
     needAddress: string;
+    needZone: string;
     modality: string;
     imageSrc: string;
 }

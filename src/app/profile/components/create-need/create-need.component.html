@@ -23,6 +23,16 @@
                     </div>
                 </div>
                 <div class="mb-3">
+                    <label for="zone" class="form-label">Zone</label>
+                    <select id="zone" class="form-select" formControlName="zone">
+                        <option value="">Select Zone</option>
+                        <option *ngFor="let option of zones" [value]="option">{{ option }}</option>
+                      </select>
+                    <div *ngIf="needForm.controls['zone'].invalid && needForm.controls['zone'].touched" class="text-danger">
+                        <div *ngIf="needForm.get('zone')?.errors?.['required']">Zone is required</div>
+                    </div>
+                </div>
+                <div class="mb-3">
                     <label for="date" class="form-label">Date</label>
                     <input type="date" id="date" class="form-control" formControlName="date">
                     <div *ngIf="needForm.controls['date'].invalid && needForm.controls['date'].touched" class="text-danger">
